@@ -1,40 +1,49 @@
 // scripts.js
 
-let historico = [];
+let bancaInicial = 0;
+let bancoDeDados = []; // Aqui armazenaremos os dados dos dias
 
-function calcular() {
-    const bancaInicial = parseFloat(document.getElementById('banca').value);
-    const resultadoDia = parseFloat(document.getElementById('resultado').value);
-
-    if (isNaN(bancaInicial) || isNaN(resultadoDia)) {
-        alert('Por favor, insira valores válidos para a banca e o resultado.');
+// Função para iniciar a banca e adicionar os dias
+function iniciarBanca() {
+    bancaInicial = parseFloat(document.getElementById('bancaInicial').value);
+    if (isNaN(bancaInicial) || bancaInicial <= 0) {
+        alert("Por favor, insira um valor válido para a banca inicial!");
         return;
     }
-
-    const meta = bancaInicial * 0.15;
-    const stopLoss = bancaInicial * 0.10;
-    const bancaFinal = bancaInicial + resultadoDia;
-
-    // Atualizar os valores na página
-    document.getElementById('bancaAtual').innerText = `R$ ${bancaFinal.toFixed(2)}`;
-    document.getElementById('meta').innerText = `R$ ${meta.toFixed(2)}`;
-    document.getElementById('stopLoss').innerText = `R$ ${stopLoss.toFixed(2)}`;
-
-    // Adicionar ao histórico
-    const data = new Date().toLocaleDateString();
-    historico.push({ data, resultado: resultadoDia, banca: bancaFinal });
-
-    // Atualizar a tabela de histórico
-    atualizarHistorico();
+    atualizarTabela();
 }
 
-function atualizarHistorico() {
-    const tabelaHistorico = document.getElementById('tabelaHistorico');
-    tabelaHistorico.innerHTML = '';
+// Função para atualizar a tabela com os cálculos
+function atualizarTabela() {
+    const tabelaBody = document.querySelector('#tabelaBanca tbody');
+    tabelaBody.innerHTML = ''; // Limpa a tabela antes de adicionar novas linhas
 
-    historico.forEach(item => {
+    for (let dia = 1; dia <= 31; dia++) {
+        const bancaMeta = bancaInicial * 0.15;
+        const bancaStop = bancaInicial * 0.10;
+
         const row = document.createElement('tr');
-        row.innerHTML = `<td>${item.data}</td><td>R$ ${item.resultado.toFixed(2)}</td><td>R$ ${item.banca.toFixed(2)}</td>`;
-        tabelaHistorico.appendChild(row);
-    });
+        row.innerHTML = `
+            <td>${dia}</td>
+            <td>R$ ${bancaInicial.toFixed(2)}</td>
+            <td><input type="number" id="resultado${dia}" placeholder="Lucro ou Perda" oninput="atualizarBanca(${dia})"></td>
+            <td>R$ ${bancaMeta.toFixed(2)}</td>
+            <td>R$ ${bancaStop.toFixed(2)}</td>
+            <td id="bancaFinal${dia}">R$ ${bancaInicial.toFixed(2)}</td>
+        `;
+        tabelaBody.appendChild(row);
+    }
 }
+
+// Função para atualizar a banca após o resultado do dia
+function atualizarBanca(dia) {
+    const resultado = parseFloat(document.getElementById(`resultado${dia}`).value);
+    if (isNaN(resultado)) return;
+
+    const bancaFinal = bancaInicial + resultado;
+    document.getElementById(`bancaFinal${dia}`).textContent = `R$ ${bancaFinal.toFixed(2)}`;
+
+    // Atualiza a banca para o próximo dia
+    bancaInicial = bancaFinal;
+}
+    
