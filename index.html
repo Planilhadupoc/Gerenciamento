@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Banca</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gerenciamento de Banca</h1>
+            <p>Controle suas metas de lucro e limites de perda</p>
+        </header>
+
+        <section>
+            <div class="input-group">
+                <label for="banca">Banca Inicial (R$):</label>
+                <input type="number" id="banca" placeholder="Digite a banca inicial">
+            </div>
+
+            <div class="input-group">
+                <label for="resultado">Resultado do Dia (R$):</label>
+                <input type="number" id="resultado" placeholder="Lucro ou Perda">
+            </div>
+
+            <button id="calcular" onclick="calcular()">Calcular</button>
+        </section>
+
+        <section>
+            <h2>Resultado</h2>
+            <p><strong>Banca Atual: </strong><span id="bancaAtual">R$ 0,00</span></p>
+            <p><strong>Meta de Lucro (15%): </strong><span id="meta">R$ 0,00</span></p>
+            <p><strong>Stop Loss (10%): </strong><span id="stopLoss">R$ 0,00</span></p>
+        </section>
+
+        <section id="historico">
+            <h2>Histórico</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dia</th>
+                        <th>Resultado</th>
+                        <th>Banca Final</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaHistorico">
+                    <!-- Linhas serão adicionadas dinamicamente -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
