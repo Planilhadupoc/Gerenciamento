@@ -1,64 +1,33 @@
-import pandas as pd
 import streamlit as st
-from datetime import datetime
+import pandas as pd
 
-# Função para carregar histórico (se existir)
-def load_data():
-    try:
-        return pd.read_csv("data.csv")
-    except FileNotFoundError:
-        return pd.DataFrame(columns=["Data", "Banca", "Resultado", "Meta", "Stop"])
+# Título da aplicação
+st.title("Gerenciamento de Banca - Meta de 15% e Stop Loss de 10%")
 
-# Função para salvar histórico
-def save_data(df):
-    df.to_csv("data.csv", index=False)
+# Entrada de dados
+banca_inicial = st.number_input("Insira sua banca inicial (R$):", min_value=0.0)
+resultado_dia = st.number_input("Resultado do dia (positivo ou negativo):", value=0.0)
 
-# Função para calcular meta e stop loss
-def calcular_meta_stop(banca):
-    meta = banca * 0.15
-    stop = banca * 0.10
-    return meta, stop
+# Cálculos de meta e stop loss
+meta = banca_inicial * 0.15
+stop_loss = banca_inicial * 0.10
 
-# Configuração da página
-st.title("Gerenciamento de Banca")
-st.sidebar.header("Configurações")
+# Botão para atualizar
+if st.button("Atualizar"):
+    nova_banca = banca_inicial + resultado_dia
+    st.success(f"Banca Atual: R$ {nova_banca:.2f}")
+    st.write(f"Meta de Lucro: R$ {meta:.2f}")
+    st.write(f"Stop Loss: R$ {stop_loss:.2f}")
 
-# Carregar dados
-dados = load_data()
+# Exemplo de tabela
+data = {
+    "Banca Atual": [banca_inicial, nova_banca],
+    "Meta (15%)": [meta, nova_banca * 0.15],
+    "Stop Loss (10%)": [stop_loss, nova_banca * 0.10],
+}
+df = pd.DataFrame(data)
 
-# Pegar o valor da banca atual
-banca_atual = float(dados["Banca"].iloc[-1]) if not dados.empty else 1000.0  # Valor inicial padrão
+st.table(df)
 
-# Mostrar banca atual
-st.subheader(f"Banca Atual: R$ {banca_atual:.2f}")
-
-# Calcular meta e stop loss
-meta, stop = calcular_meta_stop(banca_atual)
-st.write(f"Meta do Dia (15%): R$ {meta:.2f}")
-st.write(f"Stop Loss do Dia (10%): R$ {stop:.2f}")
-
-# Entrada de resultado do dia
-st.subheader("Inserir Resultado do Dia")
-resultado = st.number_input("Resultado do dia (positivo ou negativo):", value=0.0, step=0.01)
-
-if st.button("Atualizar Banca"):
-    # Atualizar banca com base no resultado
-    nova_banca = banca_atual + resultado
-
-    # Registrar no histórico
-    novo_registro = {
-        "Data": datetime.now().strftime("%Y-%m-%d"),
-        "Banca": nova_banca,
-        "Resultado": resultado,
-        "Meta": meta,
-        "Stop": stop
-    }
-    dados = dados.append(novo_registro, ignore_index=True)
-    save_data(dados)
-
-    st.success("Banca atualizada com sucesso!")
-    st.experimental_rerun()
-
-# Exibir histórico
-st.subheader("Histórico de Operações")
-st.dataframe(dados)
+# Gráfico (Exemplo)
+st.line_chart(df["Banca Atual"])
