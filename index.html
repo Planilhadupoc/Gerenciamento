@@ -3,49 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento de Banca</title>
+    <title>Gerenciamento de Banca - DUPOC</title>
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Gerenciamento de Banca</h1>
-            <p>Controle suas metas de lucro e limites de perda</p>
+            <h1>Gerenciamento de Banca - DUPOC</h1>
+            <p>Controle de Banca com Meta de 15% e Stop Loss de 10%</p>
         </header>
 
         <section>
             <div class="input-group">
-                <label for="banca">Banca Inicial (R$):</label>
-                <input type="number" id="banca" placeholder="Digite a banca inicial">
+                <label for="bancaInicial">Banca Inicial (R$):</label>
+                <input type="number" id="bancaInicial" placeholder="Digite a banca inicial" oninput="iniciarBanca()">
             </div>
-
-            <div class="input-group">
-                <label for="resultado">Resultado do Dia (R$):</label>
-                <input type="number" id="resultado" placeholder="Lucro ou Perda">
-            </div>
-
-            <button id="calcular" onclick="calcular()">Calcular</button>
         </section>
 
         <section>
-            <h2>Resultado</h2>
-            <p><strong>Banca Atual: </strong><span id="bancaAtual">R$ 0,00</span></p>
-            <p><strong>Meta de Lucro (15%): </strong><span id="meta">R$ 0,00</span></p>
-            <p><strong>Stop Loss (10%): </strong><span id="stopLoss">R$ 0,00</span></p>
-        </section>
-
-        <section id="historico">
-            <h2>Histórico</h2>
-            <table>
+            <h2>Tabela de Gestão de Banca</h2>
+            <table id="tabelaBanca">
                 <thead>
                     <tr>
-                        <th>Dia</th>
-                        <th>Resultado</th>
+                        <th>Data</th>
+                        <th>Banca Inicial</th>
+                        <th>Resultado do Dia</th>
+                        <th>15% da Banca</th>
+                        <th>10% da Banca (Stop Loss)</th>
                         <th>Banca Final</th>
                     </tr>
                 </thead>
-                <tbody id="tabelaHistorico">
-                    <!-- Linhas serão adicionadas dinamicamente -->
+                <tbody>
+                    <!-- As linhas serão adicionadas dinamicamente -->
                 </tbody>
             </table>
         </section>
