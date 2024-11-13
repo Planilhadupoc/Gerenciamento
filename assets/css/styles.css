@@ -18,10 +18,17 @@ body {
 header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start; /* Alinha logo e título à esquerda */
     background-color: #000; /* Fundo preto */
-    padding: 20px;
+    padding: 10px 20px;
+    width: 100%;
     color: white;
+    position: relative;
+}
+
+.titulo {
+    flex-grow: 1;
+    text-align: center;
 }
 
 header h1 {
@@ -30,8 +37,6 @@ header h1 {
     font-size: 36px;
     text-transform: uppercase; /* Maiúsculo */
     margin: 0;
-    flex-grow: 1; /* Faz o título ocupar o espaço restante */
-    text-align: center;
 }
 
 header p {
@@ -42,10 +47,11 @@ header p {
 }
 
 .logo img {
-    width: 50px; /* Tamanho ajustável para a logo */
-    height: 50px;
+    width: 40px; /* Tamanho ajustável para a logo */
+    height: 40px;
     border-radius: 50%;
-    margin-right: 20px;
+    position: absolute;
+    left: 20px; /* Posiciona mais no canto esquerdo */
 }
 
 .input-group {
